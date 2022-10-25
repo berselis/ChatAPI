@@ -9,7 +9,7 @@ const getAllConversations = async () => {
 const getConversationById = async (id) => {
     const data = await Conversation.findOne({
         where: {
-            id
+            userId: id
         }
     })
     return data

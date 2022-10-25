@@ -6,16 +6,17 @@ const getAllConversations = async () => {
     return data
 }
 
-const getConversationById = async (id) => {
+const getConversationById = async (idConversation, userId) => {
     const data = await Conversation.findOne({
         where: {
-            userId: id
+            id: idConversation,
+            userId
         }
     })
     return data
 }
 
-const getConversationByuserId = async (id) =>{
+const getConversationByuserId = async (id) => {
     const data = await Conversation.findAll({
         where: {
             userId: id
@@ -26,21 +27,22 @@ const getConversationByuserId = async (id) =>{
 
 const createConversation = async (data) => {
 
-    console.log(data, typeof(uuid.v4));
+    console.log(data, typeof (uuid.v4));
 
     const newData = await Conversation.create({
         id: uuid.v4(),
         title: data.title,
         imageUrl: data.imageUrl,
         userId: data.userId
-    }) 
+    })
     return newData
 }
 
-const updateConversation = async (id, data) => {
+const updateConversation = async (id, data, userId) => {
     const result = await Conversation.update(data, {
         where: {
-            id
+            id,
+            userId
         }
     })
     return result

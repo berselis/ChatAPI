@@ -30,6 +30,7 @@ const Messages = db.define('messages', {
     },
     message:{
         type: DataTypes.STRING,
+        allowNull: false,
     }
 
 })

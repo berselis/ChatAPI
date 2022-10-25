@@ -1,13 +1,11 @@
 const router = require('express').Router()
 const passport = require('passport')
-const messageService = require('../services/messages.services')
+//const messageService = require('../services/messages.services')
 const conversationService = require('../services/conversations.services')
 
-router.route('/me')
-    .get(passport.authenticate('jwt', {session: false}),
-    messageService.getMyMessage)
-    .post(passport.authenticate('jwt', {session: false}),
-    messageService.createMessage)
+router.route('/')
+    .get(passport.authenticate('jwt', {session: false}), conversationService.getMyConversation)
+    .post(passport.authenticate('jwt', {session: false}), conversationService.createConversation)
 
 router.route('/:id')
     .get(passport.authenticate('jwt', {session: false}),

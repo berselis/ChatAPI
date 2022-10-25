@@ -23,7 +23,7 @@ const getConversationById = (req, res) => {
 }
 const getMyConversation = (req, res) => {
     const id = req.user.id;
-    conversationController.getConversationById(id)
+    conversationController.getConversationByuserId(id)
         .then(data => {
             res.status(200).json(data)
         })
@@ -33,7 +33,9 @@ const getMyConversation = (req, res) => {
 }
 
 const createConversation = (req, res) => {
-    const {title, imageUrl, userId} = req.body
+    const userId = req.user.id;
+    const {title, imageUrl} = req.body
+
     if(title && imageUrl && userId){
         conversationController.createConversation({title, imageUrl, userId})
             .then(data => {
@@ -47,9 +49,7 @@ const createConversation = (req, res) => {
             message: `Missing Data`,
             fields: {
                 title: 'string',
-                imagenUrl: 'string',
-                userId: 'uuid'
-
+                imageUrl: 'string'
             }
     })
     }

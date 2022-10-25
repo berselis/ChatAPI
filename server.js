@@ -28,7 +28,8 @@ server.get('/', (_, res) => {
 
 server.use('/api/v1/users', userRouter);
 server.use('/api/v1/auth', authRouter);
-server.use('api/v1/conversations', conversationRouter)
+
+server.use('/api/v1/conversations', conversationRouter)
 
 
 server.listen(port, () => console.log(`Server started at port ${port}`));

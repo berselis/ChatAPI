@@ -10,9 +10,9 @@ const getAllMessages = (req, res) => {
         })
 }
 
-const getMessageById = (req, res) => {
-    const id = req.params.id 
-    messagesController.getMessageById(id)
+const getMessagesByIdOfconversation = (req, res) => {
+    const id = req.params.conversation_id
+    messagesController.getMessagesByIdOfConversation(id)
         .then(data => {
             res.status(200).json(data)
         })
@@ -32,7 +32,8 @@ const getMyMessage = (req, res) => {
         })
 } 
 const createMessage = (req, res) => {
-    const {message, conversationId} = req.body
+    const {message} = req.body
+    const conversationId = req.params.conversation_id
     const userId = req.user.id
     if(message && conversationId){
         messagesController.createMessage({userId, conversationId, message})
@@ -46,8 +47,7 @@ const createMessage = (req, res) => {
         res.status(400).json({
             message: 'Missing Data',
             fields: {
-                message: 'string',
-                conversationId: 'uuid'
+                message: 'string'
             }
         })
     }
@@ -80,7 +80,7 @@ const deleteMyMessage = (req, res) => {
 
 module.exports = {
     getAllMessages,
-    getMessageById,
+    getMessagesByIdOfconversation,
     getMyMessage,
     createMessage,
     deleteMessage,

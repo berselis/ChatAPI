@@ -1,5 +1,6 @@
 const uuid = require('uuid')
 const Conversation = require('../models/conversations.models')
+const Users = require('../models/users.model')
 
 const getAllConversations = async () => {
     const data = await Conversation.findAll()
@@ -16,10 +17,27 @@ const getMyConversationById = async (idConversation, userId) => {
     return data
 }
 
+// const getMyConversations = async (id) => {
+//     const data = await Conversation.findAll({
+//         where: {
+//             userId: id
+//         }
+//     })
+//     return data
+// }
+
 const getMyConversations = async (id) => {
     const data = await Conversation.findAll({
         where: {
             userId: id
+        },
+        attributes: {
+            exclude: ['userId']
+        },
+        include: {
+            model: Users,
+            // as: 'user',
+            attributes: ['id', 'firstName', 'lastName']
         }
     })
     return data

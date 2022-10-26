@@ -1,23 +1,47 @@
 const uuid = require('uuid')
+const Conversations = require('../models/conversations.models')
 const Messages = require('../models/messages.models')
+const Users = require('../models/users.model')
 
 const getAllMessages = async () => {
     const data = await Messages.findAll()
     return data
 }
 
-const getMessageById = async (id) => {
-    const data = await Messages.findOne({
+const getMessagesByIdOfConversation = async (id) => {
+    const data = await Messages.findAll({
         where: {
-            id
-        }
+            conversationId : id
+        },
+        attributes: {
+            exclude: ['userId','conversationId']
+        },
+        include:[
+            {           
+                model: Conversations,
+                attributes: ['id', 'title', 'imageUrl']
+            },
+            {
+                model: Users,
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        ]
+        // include: {           
+        //     model: Conversations,
+        //     attributes: ['id', 'title', 'imageUrl']
+        // },
+        // include: {
+        //     model: Users,
+        //     attributes: ['id', 'firstName', 'lastName']
+        // }
+
     })
     return data
 }
 
 const createMessage = async (data) => {
     const newMessage = await Messages.create({
-        id: uuid.v4,
+        id: uuid.v4(),
         userId: data.userId,
         conversationId: data.conversationId,
         message: data.message
@@ -45,7 +69,7 @@ const  deleteMessage = async (id) => {
 
 module.exports = {
     getAllMessages,
-    getMessageById,
+    getMessagesByIdOfConversation,
     createMessage,
     updateMessage,
     deleteMessage

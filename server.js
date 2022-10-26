@@ -5,7 +5,7 @@ const { port } = require('./config');
 const userRouter = require('./project/routers/users.router');
 const authRouter = require('./project/auth/auth.router');
 const conversationRouter = require('./project/routers/conversations.router')
-
+const messageRouter = require('./project/routers/messages.router')
 
 const server = express();
 
@@ -31,6 +31,6 @@ server.use('/api/v1/users', userRouter);
 
 
 server.use('/api/v1/conversations', conversationRouter)
-
+server.use('/api/v1/conversations', messageRouter)
 
 server.listen(port, () => console.log(`Server started at port ${port}`));

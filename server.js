@@ -26,8 +26,9 @@ server.get('/', (_, res) => {
     res.status(200).json({ message: 'OK!', users: `localHost:${port}/api/v1/users` })
 });
 
-server.use('/api/v1/users', userRouter);
 server.use('/api/v1/auth', authRouter);
+server.use('/api/v1/users', userRouter);
+
 
 server.use('/api/v1/conversations', conversationRouter)
 

@@ -11,10 +11,10 @@ const getAllConversations = (req, res) => {
         })
 }
 
-const getConversationById = (req, res) => {
+const getMyConversationById = (req, res) => {
     const idConversation = req.params.conversation_id;
     const idUser = req.user.id;
-    conversationController.getConversationById(idConversation, idUser)
+    conversationController.getMyConversationById(idConversation, idUser)
         .then(data => {
             if (data) {
                 res.status(200).json(data)
@@ -22,16 +22,15 @@ const getConversationById = (req, res) => {
                 res.status(400).json({ message: 'invalid convertation for this user' })
 
             }
-
         })
         .catch(err => {
             res.status(400).json({ message: err.message })
         })
 }
-const getMyConversation = (req, res) => {
 
+const getMyConversations = (req, res) => {
     const id = req.user.id;
-    conversationController.getConversationByuserId(id)
+    conversationController.getMyConversations(id)
         .then(data => {
             res.status(200).json(data)
         })
@@ -79,7 +78,7 @@ const updateConversation = (req, res) => {
                     res.status(400).json({ message: 'Invalid ID' })
             })
             .catch(err => {
-                res.status(400).json({ message: err.message + ' es de aqui el error' })
+                res.status(400).json({ message: err.message})
             })
 
     }else{
@@ -109,18 +108,22 @@ const updateMyConversation = (req, res) => {
         })
 }
 
-const deleteConversation = (req, res) => {
-    const id = req.params.conversation_id;
-    Conversations.deleteConversation(id)
-        .then(() => {
+const deleteMyConversation = (req, res) => {
+    const conversationId = req.params.conversation_id;
+    const userId = req.user.id
+    conversationController.deleteConversation(conversationId, userId)
+        .then(data => {
+            if(data)
             res.status(204).json()
+            else
+            res.status(400).json({message: 'Invalid ID'})
         })
         .catch(err => {
             res.status(400).json({ message: err.message })
         })
 }
-const deleteMyConversation = (req, res) => {
-    const id = req.user.id;
+const deleteConversation = (req, res) => {
+    const id = req.params.id;
     Conversations.deleteConversation(id)
         .then(() => {
             res.status(204).json()
@@ -132,8 +135,8 @@ const deleteMyConversation = (req, res) => {
 
 module.exports = {
     getAllConversations,
-    getConversationById,
-    getMyConversation,
+    getMyConversationById,
+    getMyConversations,
     createConversation,
     updateConversation,
     updateMyConversation,

@@ -6,7 +6,7 @@ const getAllConversations = async () => {
     return data
 }
 
-const getConversationById = async (idConversation, userId) => {
+const getMyConversationById = async (idConversation, userId) => {
     const data = await Conversation.findOne({
         where: {
             id: idConversation,
@@ -16,7 +16,7 @@ const getConversationById = async (idConversation, userId) => {
     return data
 }
 
-const getConversationByuserId = async (id) => {
+const getMyConversations = async (id) => {
     const data = await Conversation.findAll({
         where: {
             userId: id
@@ -48,8 +48,17 @@ const updateConversation = async (id, data, userId) => {
     return result
 }
 
-const deleteConversation = async (id, data) => {
-    const newData = await Conversation.destroy(data, {
+const deleteMyConversation = async (conversationId, userId) => {
+    const newData = await Conversation.destroy({
+        where: {
+            id: conversationId,
+            userId
+        }
+    })
+    return newData
+}
+const deleteConversation = async (id) => {
+    const newData = await Conversation.destroy({
         where: {
             id
         }
@@ -59,11 +68,12 @@ const deleteConversation = async (id, data) => {
 
 module.exports = {
     getAllConversations,
-    getConversationById,
+    getMyConversationById,
     createConversation,
     updateConversation,
+    deleteMyConversation,
     deleteConversation,
-    getConversationByuserId
+    getMyConversations
 }
 
 

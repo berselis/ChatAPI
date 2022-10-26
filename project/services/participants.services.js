@@ -14,24 +14,21 @@ const getAllParticipants = (req, res) => {
         }).catch(error => res.status(400).json({ message: error.message }))
 };
 
+const getParticipants = (req, res) => {
+
+}
+
 
 const addParticipant = (req, res) => {
     const conversarion_id = req.params.conversation_id;
     const { userId } = req.body;
     if (conversarion_id && userId) {
 
-
-
-
         participantController.addParticiparToConvertation(conversarion_id, userId)
             .then(data => {
                 res.status(201).json(data)
 
             }).catch(error => res.status(400).json({ message: error.message }))
-
-
-
-            
 
     } else {
         res.status(400).json({
@@ -45,6 +42,22 @@ const addParticipant = (req, res) => {
 }
 
 
+const removeParticipant = (req, res) => {
+    const participant_id = req.params.participant_id;
+
+    if (participant_id) {
+        participantController.deleteParticipantFromConversation(participant_id)
+            .then(_ => res.status(204).json())
+            .catch(error => res.status(400).json({ message: error.message }))
+
+    } else {
+
+
+    }
+}
+
+
+
 
 
 
@@ -55,5 +68,7 @@ const addParticipant = (req, res) => {
 
 module.exports = {
     getAllParticipants,
-    addParticipant
+    addParticipant,
+    getParticipants,
+    removeParticipant
 }

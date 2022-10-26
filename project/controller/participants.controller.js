@@ -32,6 +32,31 @@ const addParticiparToConvertation = async (conversation_id, userId) => {
     return participant
 }
 
+const getParticipantFromConvertation = async (conversation_id, userId) => {
+    const data = await Participants.findOne({
+        where: {
+            conversationId: conversation_id,
+            userId
+        },
+        include: {
+            model: Conversations,
+            model: Users
+        }
+    })
+
+    return data;
+
+}
+
+const deleteParticipantFromConversation = async (participant_id) => {
+    const result = await Participants.destroy({
+        where: {
+            id: participant_id
+        }
+    })
+    return result;
+}
+
 
 
 
@@ -39,5 +64,7 @@ const addParticiparToConvertation = async (conversation_id, userId) => {
 
 module.exports = {
     getParticipantByIdConversation,
-    addParticiparToConvertation
+    addParticiparToConvertation,
+    getParticipantFromConvertation,
+    deleteParticipantFromConversation
 }

@@ -67,8 +67,6 @@ const updateConversation = (req, res) => {
     const userId = req.user.id;
     const { title, imageUrl } = req.body
 
-    console.log(title, imageUrl)
-
     if (title && imageUrl) {
         conversationController.updateConversation(idConvertation, { title, imageUrl }, userId)
             .then(data => {

@@ -15,6 +15,11 @@ const getAllParticipants = (req, res) => {
 };
 
 const getParticipants = (req, res) => {
+    const participant_id = req.params.participant_id;
+    participantController.getParticipantFromConvertation(participant_id)
+        .then(data => res.status(200).json(data))
+        .catch(error => res.status(400).json({ message: error.message }))
+
 
 }
 

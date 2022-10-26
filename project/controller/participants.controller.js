@@ -32,16 +32,21 @@ const addParticiparToConvertation = async (conversation_id, userId) => {
     return participant
 }
 
-const getParticipantFromConvertation = async (conversation_id, userId) => {
+const getParticipantFromConvertation = async (participant_id) => {
     const data = await Participants.findOne({
         where: {
-            conversationId: conversation_id,
-            userId
+            id: participant_id,
         },
-        include: {
-            model: Conversations,
-            model: Users
-        }
+        attributes: ['id'],
+        include: [
+            {
+                model: Conversations
+            },
+            {
+                model: Users,
+                attributes: ['id', 'firstName', 'lastName', 'email', 'role']
+            }
+        ]
     })
 
     return data;

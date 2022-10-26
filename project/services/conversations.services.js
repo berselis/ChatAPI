@@ -64,9 +64,6 @@ const createConversation = (req, res) => {
 }
 
 const updateConversation = (req, res) => {
-
-    
-
     const idConvertation = req.params.conversation_id;
     const userId = req.user.id;
     const { title, imageUrl } = req.body
@@ -77,7 +74,7 @@ const updateConversation = (req, res) => {
         conversationController.updateConversation(idConvertation, { title, imageUrl }, userId)
             .then(data => {
                 if (data[0])
-                    res.status(200).json({ message: `conversation with ID: ${id} edited succesfully!` })
+                    res.status(200).json({ message: `conversation with ID: ${userId} edited succesfully!` })
                 else
                     res.status(400).json({ message: 'Invalid ID' })
             })

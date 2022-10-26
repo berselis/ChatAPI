@@ -15,7 +15,7 @@ const Conversations = db.define('conversations', {
     imageUrl: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        // unique: true,
         field: 'image_url'
     },
     userId: {

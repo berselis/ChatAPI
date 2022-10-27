@@ -12,6 +12,14 @@ const getMyConversationById = async (idConversation, userId) => {
         where: {
             id: idConversation,
             userId
+        },
+        attributes: {
+            exclude: ['userId']
+        },
+        include: {
+            model: Users,
+            // as: 'user',
+            attributes: ['id', 'firstName', 'lastName']
         }
     })
     return data

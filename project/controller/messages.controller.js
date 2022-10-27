@@ -8,10 +8,11 @@ const getAllMessages = async () => {
     return data
 }
 
-const getMessagesByIdOfConversation = async (id) => {
+const getMessagesByIdOfConversation = async (conversationId, userId) => {
     const data = await Messages.findAll({
         where: {
-            conversationId : id
+            conversationId,
+            userId,
         },
         attributes: {
             exclude: ['userId','conversationId']
@@ -26,15 +27,29 @@ const getMessagesByIdOfConversation = async (id) => {
                 attributes: ['id', 'firstName', 'lastName']
             }
         ]
-        // include: {           
-        //     model: Conversations,
-        //     attributes: ['id', 'title', 'imageUrl']
-        // },
-        // include: {
-        //     model: Users,
-        //     attributes: ['id', 'firstName', 'lastName']
-        // }
-
+    })
+    return data
+}
+const getMessagesByIdOfConversationAndIdOfMessage = async (conversationId, messageId, userId) => {
+    const data = await Messages.findOne({
+        where: {
+            id:messageId,
+            conversationId : conversationId,
+            userId
+        },
+        attributes: {
+            exclude: ['userId','conversationId']
+        },
+        include:[
+            {           
+                model: Conversations,
+                attributes: ['id', 'title', 'imageUrl']
+            },
+            {
+                model: Users,
+                attributes: ['id', 'firstName', 'lastName']
+            }
+        ]
     })
     return data
 }
@@ -58,10 +73,12 @@ const updateMessage = async(id, data) => {
     return newData
 }
 
-const  deleteMessage = async (id) => {
+const  deleteMessage = async (conversationId, messageId, userId) => {
     const data = await Messages.destroy({
         where: {
-            id
+            id: messageId,
+            conversationId,
+            userId       
         }
     })
     return data
@@ -70,6 +87,7 @@ const  deleteMessage = async (id) => {
 module.exports = {
     getAllMessages,
     getMessagesByIdOfConversation,
+    getMessagesByIdOfConversationAndIdOfMessage,
     createMessage,
     updateMessage,
     deleteMessage

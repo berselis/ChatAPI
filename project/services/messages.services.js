@@ -10,11 +10,30 @@ const getAllMessages = (req, res) => {
         })
 }
 
-const getMessagesByIdOfconversation = (req, res) => {
-    const id = req.params.conversation_id
-    messagesController.getMessagesByIdOfConversation(id)
+const getAllMessagesByIdOfconversation = (req, res) => {
+    const conversationId = req.params.conversation_id;
+    const userId = req.user.id
+    messagesController.getMessagesByIdOfConversation(conversationId,userId)
         .then(data => {
-            res.status(200).json(data)
+            // if(data[0])
+                res.status(200).json(data)
+            // else
+            //     res.status(400).json({message: 'Invalid Id'})
+        })
+        .catch(err => {
+            res.status(404).json({message: err.message})
+        })
+} 
+const getMessagesByIdOfConversationAndIdOfMessage = (req, res) => {
+    const conversationId = req.params.conversation_id
+    const messageId = req.params.message_id
+    const userId = req.user.id
+    messagesController.getMessagesByIdOfConversationAndIdOfMessage(conversationId,messageId, userId)
+        .then(data => {
+            if(data)
+                res.status(200).json(data)
+            else    
+                res.status(400).json({message: 'invalid messageId o conversationId'})
         })
         .catch(err => {
             res.status(404).json({message: err.message})
@@ -67,11 +86,16 @@ const deleteMessage = (req, res) => {
 const updateMessage = () => {
     
 }
-const deleteMyMessage = (req, res) => {
-    const id = req.user.id;
-    messagesController.deleteMessage(id)
-        .then(() => {
-            res.status(204).json({message: `the message was deleted succesfully`})
+const deleteMyMessageByConversationIdAndMessageId = (req, res) => {
+    const conversationId = req.params.conversation_id;
+    const messageId = req.params.message_id;
+    const userId = req.user.id
+    messagesController.deleteMessage(conversationId, messageId, userId)
+        .then((data) => {
+            if(data)
+              res.status(204).json({message: `the message was deleted succesfully`})
+            else
+              res.status(400).json({message: 'Invalida MessageId o conversationId'})
         })
         .catch(err => {
             res.status(400).json({message: err.message})
@@ -80,9 +104,10 @@ const deleteMyMessage = (req, res) => {
 
 module.exports = {
     getAllMessages,
-    getMessagesByIdOfconversation,
+    getAllMessagesByIdOfconversation,
+    getMessagesByIdOfConversationAndIdOfMessage,
     getMyMessage,
     createMessage,
     deleteMessage,
-    deleteMyMessage
+    deleteMyMessageByConversationIdAndMessageId
 }

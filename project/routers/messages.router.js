@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const messageServices = require('../services/messages.services')
 const passport = require('passport')
+require('../middlewares/auth.middleware')(passport);
+
 
 router.route('/:conversation_id/messages')
     .post(passport.authenticate('jwt', {session: false}), messageServices.createMessage)

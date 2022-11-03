@@ -2,6 +2,7 @@ const router = require('express').Router()
 const passport = require('passport')
 //const messageService = require('../services/messages.services')
 const conversationService = require('../services/conversations.services')
+require('../middlewares/auth.middleware')(passport)
 
 
 router.route('/')
